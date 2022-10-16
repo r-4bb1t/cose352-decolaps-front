@@ -1,8 +1,15 @@
 import type { NextPage } from "next";
 import styled from "@emotion/styled";
+import { Layout } from "../components/Layout";
+import ShareButton from "../components/ShareButton";
 
 const Home: NextPage = () => {
-  return <Title>소프트웨어공학</Title>;
+  return (
+    <Layout>
+      <Title>소프트웨어공학</Title>
+      <ShareButton />
+    </Layout>
+  );
 };
 
 const Title = styled.div`

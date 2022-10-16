@@ -9,4 +9,14 @@ export const global = css`
       Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
       "Noto Sans KR", "Malgun Gothic", sans-serif;
   }
+
+  button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+    :hover {
+      transform: scale(0.9);
+    }
+  }
 `;
