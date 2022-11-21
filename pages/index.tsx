@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import styled from "@emotion/styled";
 import { Layout } from "../components/Layout";
 import ShareButton from "../components/ShareButton";
+import Link from "next/link";
 
 const Laptop = styled.div`
   width: 720px;
@@ -13,7 +14,7 @@ const Laptop = styled.div`
   border-radius: 30px;
 `;
 
-const DecoButton = styled.button`
+const DecoButton = styled.a`
   width: 320px;
   height: 64px;
   font-size: 2rem;
@@ -35,7 +36,9 @@ const Home: NextPage = () => {
       <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">
         <section className="z-0 flex flex-col gap-16 items-center justify-center w-full h-screen pt-32">
           <Laptop className="z-50 w-[320px] h-[200px] lg:w-[32vw] lg:h-[20vw] shrink-0" />
-          <DecoButton>DECORATE!</DecoButton>
+          <Link href="/deco">
+            <DecoButton>DECORATE!</DecoButton>
+          </Link>
         </section>
       </main>
     </Layout>
