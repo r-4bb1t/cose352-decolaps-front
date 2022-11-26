@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Layout } from "../components/Layout";
 import ShareButton from "../components/ShareButton";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const Laptop = styled.div`
   width: 720px;
@@ -31,14 +32,17 @@ const DecoButton = styled.a`
 `;
 
 const Home: NextPage = () => {
+  const { data: session } = useSession();
   return (
     <Layout>
       <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">
         <section className="z-0 flex flex-col gap-16 items-center justify-center w-full h-screen pt-32">
           <Laptop className="z-50 w-[320px] h-[200px] lg:w-[32vw] lg:h-[20vw] shrink-0" />
-          <Link href="/deco">
-            <DecoButton>DECORATE!</DecoButton>
-          </Link>
+          {session && (
+            <Link href="/deco">
+              <DecoButton>DECORATE!</DecoButton>
+            </Link>
+          )}
         </section>
       </main>
     </Layout>
