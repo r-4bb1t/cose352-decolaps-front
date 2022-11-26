@@ -4,6 +4,7 @@ import { Layout } from "../components/Layout";
 import ShareButton from "../components/ShareButton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 const Laptop = styled.div`
   width: 720px;
@@ -33,6 +34,7 @@ const DecoButton = styled.a`
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
+
   return (
     <Layout>
       <main className="bg-[url('/assets/bg-image.png')] bg-center bg-cover">
