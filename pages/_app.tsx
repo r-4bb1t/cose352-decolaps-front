@@ -4,6 +4,7 @@ import { global } from "../global";
 import "../styles/global.css";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import WalletProvider from "../contexts/useWallet";
 
 function MyApp({
   Component,
@@ -13,8 +14,10 @@ function MyApp({
 }>) {
   return (
     <SessionProvider session={pageProps.session}>
-      <Global styles={global} />
-      <Component {...pageProps} />
+      <WalletProvider>
+        <Global styles={global} />
+        <Component {...pageProps} />
+      </WalletProvider>
     </SessionProvider>
   );
 }

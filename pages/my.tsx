@@ -1,19 +1,31 @@
 import type { NextPage } from "next";
 import styled from "@emotion/styled";
 import { Layout } from "../components/Layout";
-import ShareButton from "../components/ShareButton";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { stickers as localStickers } from "../components/sticker/stickers";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useWallet } from "../contexts/useWallet";
+import useStickers from "../hooks/useStickers";
+import { allStickers } from "../components/sticker/stickers";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  const [stickers, setStickers] = useState(
-    Object.keys(localStickers).map((localSticker, i) => {
-      return { name: localSticker, index: i };
-    })
-  );
+  const { keplr, connectWallet } = useWallet();
+  const { stickers } = useStickers();
+  const [address, setAddress] = useState("");
+
+  const getAddress = useCallback(async () => {
+    const key = await keplr?.getKey(""); //chainId
+    if (key?.address) {
+      let s = "";
+      for (var i = 0; i < key.address.byteLength; i++) {
+        s += String.fromCharCode(key.address[i]);
+      }
+      setAddress(s);
+    }
+  }, [keplr]);
+  useEffect(() => {
+    getAddress();
+  }, [keplr]);
 
   return (
     <Layout>
@@ -35,20 +47,39 @@ const Home: NextPage = () => {
               </svg>
               {session?.user?.name}
             </div>
+            {keplr ? (
+              <div>{address}</div>
+            ) : (
+              <button className="bg-white px-4 rounded font-bold py-2">
+                Connect Wallet
+              </button>
+            )}
           </div>
           <div className="w-full px-24 flex flex-col items-center">
             <div className="font-extrabold text-xl mb-4">My Stickers</div>
-            <div className="grid grid-cols-8 place-items-center h-100 gap-4 py-4 overflow-y-auto">
+            <div className="grid grid-cols-8 place-items-center h-80 gap-4 py-4">
               {stickers.map((s) => (
                 <div
-                  className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0"
+                  className="relative h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 group"
                   key={s.index}
                   style={{
                     backgroundImage: `url('/assets/${
-                      localStickers[s.name as keyof typeof localStickers].url
+                      allStickers[s.name as keyof typeof allStickers].url
                     }')`,
                   }}
-                />
+                >
+                  {
+                    <div className="opacity-0 group-hover:opacity-100 bottom-full w-max transition-opacity px-2 py-1 text-white absolute bg-black bg-opacity-70 rounded">
+                      <div className="font-bold mb-1">[{s.name}]</div>
+                      {s.description.split("\n").map((s, i) => (
+                        <span key={i}>
+                          {s}
+                          <br />
+                        </span>
+                      ))}
+                    </div>
+                  }
+                </div>
               ))}
             </div>
           </div>
