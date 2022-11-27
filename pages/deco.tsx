@@ -24,7 +24,7 @@ interface StickerResponse {
 }
 
 const Deco: NextPage = () => {
-  const { stickers } = useStickers();
+  const { loading, stickers } = useStickers();
 
   const [editorState, setEditorState] = useState<LaptopLayout>({
     laptop: sampleLaptop,
@@ -58,22 +58,31 @@ const Deco: NextPage = () => {
         <div className="flex justify-center">
           <div className="bg-[url('/assets/bg-image.png')] bg-cover w-[840px] h-[20vh] align-center absolute bottom-0 overflow-hidden">
             <div className="flex h-full gap-4 pl-4 overflow-x-scroll row">
-              {stickers.map((s) => (
-                <div
-                  className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 mt-4"
-                  onClick={() =>
-                    setCurrentSticker(
-                      allStickers[s.name as keyof typeof allStickers]
-                    )
-                  }
-                  key={s.index}
-                  style={{
-                    backgroundImage: `url('/assets/${
-                      allStickers[s.name as keyof typeof allStickers].url
-                    }')`,
-                  }}
-                />
-              ))}
+              {loading
+                ? [...Array(16)].map((_, i) => (
+                    <div
+                      className="relative h-[15vh] w-[15vh] bg-contain flex items-center justify-center shrink-0 group rounded pt-8"
+                      key={i}
+                    >
+                      <div className="h-2/3 w-2/3 bg-zinc-600 animate-pulse"></div>
+                    </div>
+                  ))
+                : stickers.map((s) => (
+                    <div
+                      className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 mt-4"
+                      onClick={() =>
+                        setCurrentSticker(
+                          allStickers[s.name as keyof typeof allStickers]
+                        )
+                      }
+                      key={s.index}
+                      style={{
+                        backgroundImage: `url('/assets/${
+                          allStickers[s.name as keyof typeof allStickers].url
+                        }')`,
+                      }}
+                    />
+                  ))}
             </div>
           </div>
         </div>

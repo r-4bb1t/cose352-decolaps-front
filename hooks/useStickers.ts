@@ -11,6 +11,7 @@ import { format } from "date-fns";
 const useStickers = () => {
   const { data: session } = useSession();
   const [languages, setLanguages] = useState<ILanguage[]>([]);
+  const [loading, setLoading] = useState(false);
   const ds = Object.keys(defaultStickers).map((s, i) => {
     return {
       name: s,
@@ -26,6 +27,7 @@ const useStickers = () => {
     if (!session?.user?.id) {
       return;
     }
+    setLoading(true);
     const result = (await (
       await fetch("https://api.github.com/graphql", {
         method: "POST",
@@ -54,6 +56,7 @@ const useStickers = () => {
         }),
       })
     ).json()) as IRepositoryResponse;
+    setLoading(false);
 
     const t = createTotals(result.data.user.repositories.nodes);
     setLanguages(t.percentages);
@@ -85,7 +88,7 @@ const useStickers = () => {
     if (session?.user) fetchLanguages();
   }, [fetchLanguages, session?.user]);
 
-  return { stickers };
+  return { loading, stickers };
 };
 
 export default useStickers;

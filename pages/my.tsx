@@ -9,7 +9,7 @@ import { allStickers } from "../components/sticker/stickers";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  const { stickers } = useStickers();
+  const { loading, stickers } = useStickers();
 
   return (
     <Layout>
@@ -35,29 +35,36 @@ const Home: NextPage = () => {
           <div className="w-full px-24 flex flex-col items-center">
             <div className="font-extrabold text-xl mb-4">My Stickers</div>
             <div className="grid grid-cols-8 place-items-center h-80 gap-4 py-4">
-              {stickers.map((s) => (
-                <div
-                  className="relative h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 group"
-                  key={s.index}
-                  style={{
-                    backgroundImage: `url('/assets/${
-                      allStickers[s.name as keyof typeof allStickers].url
-                    }')`,
-                  }}
-                >
-                  {
-                    <div className="opacity-0 group-hover:opacity-100 bottom-full w-max transition-opacity px-2 py-1 text-white absolute bg-black bg-opacity-70 rounded">
-                      <div className="font-bold mb-1">[{s.name}]</div>
-                      {s.description.split("\n").map((s, i) => (
-                        <span key={i}>
-                          {s}
-                          <br />
-                        </span>
-                      ))}
+              {loading
+                ? [...Array(16)].map((_, i) => (
+                    <div
+                      className="relative h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 group rounded bg-zinc-600 animate-pulse"
+                      key={i}
+                    />
+                  ))
+                : stickers.map((s) => (
+                    <div
+                      className="relative h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 group"
+                      key={s.index}
+                      style={{
+                        backgroundImage: `url('/assets/${
+                          allStickers[s.name as keyof typeof allStickers].url
+                        }')`,
+                      }}
+                    >
+                      {
+                        <div className="opacity-0 group-hover:opacity-100 bottom-full w-max transition-opacity px-2 py-1 text-white absolute bg-black bg-opacity-70 rounded">
+                          <div className="font-bold mb-1">[{s.name}]</div>
+                          {s.description.split("\n").map((s, i) => (
+                            <span key={i}>
+                              {s}
+                              <br />
+                            </span>
+                          ))}
+                        </div>
+                      }
                     </div>
-                  }
-                </div>
-              ))}
+                  ))}
             </div>
           </div>
         </section>
