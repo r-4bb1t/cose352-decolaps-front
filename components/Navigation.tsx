@@ -12,14 +12,31 @@ export const Navigation: React.FC = () => {
             <Image src="/assets/logo@3x.png" alt="" width={120} height={30} />
           </Link>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
+          <Link href="/shop">
+            <button className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                className="w-4 h-4 fill-black cursor-pointer"
+                viewBox="0 0 512 512"
+                enable-background="new 0 0 512 512"
+              >
+                <g>
+                  <g>
+                    <path d="m475.5,475.9l-29.5-329.4c-0.9-10.5-9.8-18.6-20.5-18.6h-77.5c-18.1-59.3-49.1-116.9-92-116.9-43,0-73.9,57.6-92.2,116.9h-77.5c-10.6,0-19.5,8.1-20.5,18.6l-29.6,332.3c-1.1,14.8 9.2,22.2 20.5,22.2h398.7c0.1,0 0.1,0 0.2,0 13,0 21.5-11.2 19.9-25.1zm-219.5-424.1c14.3-1.42109e-14 33.8,34 48.7,76.1h-97.4c14.8-42.1 34.4-76.1 48.7-76.1zm-177,408.4l26.1-291.4h48.1c-5.8,26.9-8.7,51.2-8.7,67.2 0,11.3 9.2,20.4 20.5,20.4s20.5-9.1 20.5-20.4c0-19.8 3.7-43.5 9.5-67.2h121.9c5.8,23.7 9.5,47.4 9.5,67.2 0,11.3 9.2,20.4 20.5,20.4 11.3,0 20.5-9.1 20.5-20.4 0-16-2.9-40.3-8.7-67.2h48.1l26.1,291.4h-353.9z" />
+                  </g>
+                </g>
+              </svg>
+            </button>
+          </Link>
           {session ? (
             <div className="group">
               <div className="w-8 h-8 rounded-full overflow-hidden">
                 <img src={session.user?.image || ""} />
               </div>
               <div className="absolute top-0 right-6">
-                <ul className="hidden mt-12 group-focus:flex group-hover:flex flex-col bg-white rounded">
+                <ul className="hidden mt-14 group-focus:flex group-hover:flex flex-col bg-white rounded">
                   <li className="p-4 font-bold flex gap-2 items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

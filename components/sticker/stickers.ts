@@ -28,8 +28,30 @@ export const stickers = {
   kotlin: s(153, 153, "kotlin"),
   php: s(192, 105, "php"),
   python: s(153, 153, "python"),
-  ruby: s(153, 153, "ruby"),
   typescript: s(153, 191, "typescript"),
 };
 
-export const allStickers = { ...defaultStickers, ...stickers };
+export const shopStickers = {
+  tokki: {
+    ...s(276, 254, "tokki", "png"),
+    description: "Decolaps × <톡기의 인턴일기>",
+    price: 2,
+  },
+  ubuntu: {
+    ...s(1200, 1200, "ubuntu", "png"),
+    description: "Ubuntu",
+    price: 3,
+  },
+  fedora: {
+    ...s(2048, 2048, "fedora", "png"),
+    description: "Fedora",
+    price: 3,
+  },
+  potato: {
+    ...s(700, 469, "potato", "png"),
+    description: "Potato is delicious",
+    price: 1,
+  },
+};
+
+export const allStickers = { ...defaultStickers, ...stickers, ...shopStickers };

@@ -9,23 +9,7 @@ import { allStickers } from "../components/sticker/stickers";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  const { keplr, connectWallet } = useWallet();
   const { stickers } = useStickers();
-  const [address, setAddress] = useState("");
-
-  const getAddress = useCallback(async () => {
-    const key = await keplr?.getKey(""); //chainId
-    if (key?.address) {
-      let s = "";
-      for (var i = 0; i < key.address.byteLength; i++) {
-        s += String.fromCharCode(key.address[i]);
-      }
-      setAddress(s);
-    }
-  }, [keplr]);
-  useEffect(() => {
-    getAddress();
-  }, [keplr]);
 
   return (
     <Layout>
@@ -47,13 +31,6 @@ const Home: NextPage = () => {
               </svg>
               {session?.user?.name}
             </div>
-            {keplr ? (
-              <div>{address}</div>
-            ) : (
-              <button className="bg-white px-4 rounded font-bold py-2">
-                Connect Wallet
-              </button>
-            )}
           </div>
           <div className="w-full px-24 flex flex-col items-center">
             <div className="font-extrabold text-xl mb-4">My Stickers</div>

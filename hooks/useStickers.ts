@@ -15,7 +15,7 @@ const useStickers = () => {
     return {
       name: s,
       index: i,
-      description: `✔ 기본 제공 스티커]\n획득일: ${format(
+      description: `✔ 기본 제공 스티커\n획득일: ${format(
         new Date(),
         "yyyy-MM-dd"
       )}`,
