@@ -2,8 +2,6 @@ import type { NextPage } from "next";
 import styled from "@emotion/styled";
 import { Layout } from "../components/Layout";
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
-import { useWallet } from "../contexts/useWallet";
 import useStickers from "../hooks/useStickers";
 import { allStickers } from "../components/sticker/stickers";
 

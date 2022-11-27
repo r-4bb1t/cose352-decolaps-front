@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Editor from "../components/editor/Editor";
 import { MainButton } from "../components/MainButton";
 import { Navigation } from "../components/Navigation";
