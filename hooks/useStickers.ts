@@ -75,7 +75,7 @@ const useStickers = () => {
             description: `✔ 깃허브 기록으로 획득!\n획득일: ${format(
               new Date(),
               "yyyy-MM-dd"
-            )}\n${s.codes} lines`,
+            )}`,
           };
         }),
     ]);

@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import Editor from "../components/editor/Editor";
 import { MainButton } from "../components/MainButton";
 import { Navigation } from "../components/Navigation";
-import { stickers as localStickers } from "../components/sticker/stickers";
+import {
+  allStickers,
+  stickers as localStickers,
+} from "../components/sticker/stickers";
+import useStickers from "../hooks/useStickers";
 import { Laptop, LaptopLayout } from "../types/Layout";
 import { Sticker } from "../types/Sticker";
 
@@ -20,11 +24,7 @@ interface StickerResponse {
 }
 
 const Deco: NextPage = () => {
-  const [stickers, setStickers] = useState(
-    Object.keys(localStickers).map((localSticker, i) => {
-      return { name: localSticker, index: i };
-    })
-  );
+  const { stickers } = useStickers();
 
   const [editorState, setEditorState] = useState<LaptopLayout>({
     laptop: sampleLaptop,
@@ -63,13 +63,13 @@ const Deco: NextPage = () => {
                   className="h-[15vh] w-[15vh] bg-contain bg-no-repeat bg-center shrink-0 mt-4"
                   onClick={() =>
                     setCurrentSticker(
-                      localStickers[s.name as keyof typeof localStickers]
+                      allStickers[s.name as keyof typeof allStickers]
                     )
                   }
                   key={s.index}
                   style={{
                     backgroundImage: `url('/assets/${
-                      localStickers[s.name as keyof typeof localStickers].url
+                      allStickers[s.name as keyof typeof allStickers].url
                     }')`,
                   }}
                 />
