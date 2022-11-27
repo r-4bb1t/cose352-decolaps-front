@@ -18,7 +18,11 @@ export function createTotals(repos: IRepository[]) {
     let obj: { [key: string]: ILanguage } = {};
     repo.languages.nodes.forEach((node, index) => {
       const commits = repo.languages.edges[index].size;
-      obj[node.name] = { ...node, codes: commits };
+      obj[node.name] = {
+        ...node,
+        codes: commits,
+        sticker: getStickerName(node.name),
+      };
     });
     return obj;
   });
