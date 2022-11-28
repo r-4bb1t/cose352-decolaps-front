@@ -20,7 +20,7 @@ export const Navigation: React.FC = () => {
                 version="1.1"
                 className="w-4 h-4 fill-black cursor-pointer"
                 viewBox="0 0 512 512"
-                enable-background="new 0 0 512 512"
+                enableBackground="new 0 0 512 512"
               >
                 <g>
                   <g>
