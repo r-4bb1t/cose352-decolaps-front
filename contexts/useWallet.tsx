@@ -7,12 +7,14 @@ import {
 } from "react";
 import { Keplr } from "@keplr-wallet/types";
 import { getKeplrFromWindow } from "@keplr-wallet/stores";
+import { chainInfo } from "../config/chain";
 
 interface Props {
   children: ReactNode;
 }
 
 const KeyAccountAutoConnect = "account_auto_connect";
+
 
 export const WalletContext = createContext({});
 
@@ -35,8 +37,8 @@ export const WalletProvider = ({ children }: Props) => {
         throw new Error("Keplr extension not found");
       }
 
-      // await newKeplr.experimentalSuggestChain(chainInfo);
-      // await newKeplr.enable(chainInfo.chainId);
+      await newKeplr.experimentalSuggestChain(chainInfo);
+      await newKeplr.enable(chainInfo.chainId);
 
       localStorage?.setItem(KeyAccountAutoConnect, "true");
       setKeplr(newKeplr);
@@ -63,4 +65,3 @@ export const WalletProvider = ({ children }: Props) => {
   );
 };
 
-export default WalletProvider;
