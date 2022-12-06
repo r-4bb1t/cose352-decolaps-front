@@ -4,7 +4,7 @@ import { global } from "../global";
 import "../styles/global.css";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import WalletProvider from "../contexts/useWallet";
+import {WalletProvider} from "../contexts/useWallet";
 
 function MyApp({
   Component,

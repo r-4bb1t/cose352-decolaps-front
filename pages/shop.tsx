@@ -8,6 +8,8 @@ import useStickers from "../hooks/useStickers";
 import { shopStickers } from "../components/sticker/stickers";
 import cc from "classcat";
 import Link from "next/link";
+import {chainInfo} from "../config/chain"
+
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
@@ -16,12 +18,9 @@ const Home: NextPage = () => {
   const [address, setAddress] = useState("");
 
   const getAddress = useCallback(async () => {
-    const key = await keplr?.getKey(""); //chainId
+    const key = await keplr?.getKey(chainInfo.chainId); //chainId
     if (key?.address) {
-      let s = "";
-      for (var i = 0; i < key.address.byteLength; i++) {
-        s += String.fromCharCode(key.address[i]);
-      }
+      let s = "Wallet Connected";
       setAddress(s);
     }
   }, [keplr]);
