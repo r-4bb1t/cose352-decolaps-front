@@ -1,10 +1,8 @@
 import type { NextPage } from "next";
 import styled from "@emotion/styled";
 import { Layout } from "../components/Layout";
-import ShareButton from "../components/ShareButton";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 const Laptop = styled.div`
   width: 720px;
