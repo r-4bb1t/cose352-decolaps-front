@@ -53,7 +53,7 @@ const Home: NextPage = () => {
                 <div>{address}</div>
               </>
             ) : (
-              <button className="bg-black text-white px-4 w-48 rounded font-bold py-2">
+              <button className="bg-black text-white px-4 w-48 rounded font-bold py-2" onClick = {connectWallet}>
                 Connect Wallet
               </button>
             )}
