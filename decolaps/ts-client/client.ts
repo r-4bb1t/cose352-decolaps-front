@@ -18,7 +18,7 @@ const defaultFee = {
 };
 
 export class IgniteClient extends EventEmitter {
-	static plugins: Module[] = [];
+  static plugins: Module[] = [];
   env: Env;
   signer: OfflineSigner;
   registry: Array<[string, GeneratedType]> = [];
@@ -30,19 +30,28 @@ export class IgniteClient extends EventEmitter {
     }
 
     if (Array.isArray(plugin)) {
-      type Extension = UnionToIntersection<Return<T>['module']>
-      return AugmentedClient as typeof AugmentedClient & Constructor<Extension>;  
+      type Extension = UnionToIntersection<Return<T>["module"]>;
+      return AugmentedClient as typeof AugmentedClient & Constructor<Extension>;
     }
 
-    type Extension = Return<T>['module']
+    type Extension = Return<T>["module"];
     return AugmentedClient as typeof AugmentedClient & Constructor<Extension>;
   }
 
   async signAndBroadcast(msgs: EncodeObject[], fee: StdFee, memo: string) {
     if (this.signer) {
       const { address } = (await this.signer.getAccounts())[0];
-      const signingClient = await SigningStargateClient.connectWithSigner(this.env.rpcURL, this.signer, { registry: new Registry(this.registry), prefix: this.env.prefix });
-      return await signingClient.signAndBroadcast(address, msgs, fee ? fee : defaultFee, memo)
+      const signingClient = await SigningStargateClient.connectWithSigner(
+        this.env.rpcURL,
+        this.signer,
+        { registry: new Registry(this.registry), prefix: this.env.prefix }
+      );
+      return await signingClient.signAndBroadcast(
+        address,
+        msgs,
+        fee ? fee : defaultFee,
+        memo
+      );
     } else {
       throw new Error(" Signer is not present.");
     }
@@ -52,29 +61,29 @@ export class IgniteClient extends EventEmitter {
     super();
     this.env = env;
     this.setMaxListeners(0);
+    //@ts-expect-error
     this.signer = signer;
     const classConstructor = this.constructor as typeof IgniteClient;
-    classConstructor.plugins.forEach(plugin => {
+    classConstructor.plugins.forEach((plugin) => {
       const pluginInstance = plugin(this);
-      Object.assign(this, pluginInstance.module)
+      Object.assign(this, pluginInstance.module);
       if (this.registry) {
-        this.registry = this.registry.concat(pluginInstance.registry)
+        this.registry = this.registry.concat(pluginInstance.registry);
       }
-		});		
+    });
   }
-  async useSigner(signer: OfflineSigner) {    
-      this.signer = signer;
-      this.emit("signer-changed", this.signer);
+  async useSigner(signer: OfflineSigner) {
+    this.signer = signer;
+    this.emit("signer-changed", this.signer);
   }
   async useKeplr(keplrChainInfo: Partial<ChainInfo> = {}) {
     // Using queryClients directly because BaseClient has no knowledge of the modules at this stage
     try {
-      const queryClient = (
-        await import("./cosmos.base.tendermint.v1beta1/module")
-      ).queryClient;
-      const stakingQueryClient = (
-        await import("./cosmos.staking.v1beta1/module")
-      ).queryClient;
+      const queryClient = //@ts-expect-error
+      (await import("./cosmos.base.tendermint.v1beta1/module")).queryClient;
+      const stakingQueryClient = //@ts-expect-error
+      (await import("./cosmos.staking.v1beta1/module")).queryClient;
+      //@ts-expect-error
       const bankQueryClient = (await import("./cosmos.bank.v1beta1/module"))
         .queryClient;
 
@@ -107,8 +116,8 @@ export class IgniteClient extends EventEmitter {
         bech32PrefixConsAddr: addrPrefix + "valcons",
         bech32PrefixConsPub: addrPrefix + "valconspub",
       };
-
       let currencies =
+        //@ts-ignore
         tokens.supply?.map((x) => {
           const y = {
             coinDenom: x.denom?.toUpperCase() ?? "",
@@ -119,6 +128,7 @@ export class IgniteClient extends EventEmitter {
         }) ?? [];
 
       let feeCurrencies =
+        //@ts-ignore
         tokens.supply?.map((x) => {
           const y = {
             coinDenom: x.denom?.toUpperCase() ?? "",
