@@ -1,4 +1,11 @@
-import { CSSProperties, MouseEventHandler, useMemo, useRef, useState } from "react";
+import {
+  CSSProperties,
+  MouseEventHandler,
+  RefObject,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { LaptopLayout } from "../../types/Layout";
 import { Sticker } from "../../types/Sticker";
 import { clientToSVGPosition } from "../../utils/svg";
@@ -55,6 +62,7 @@ interface Props {
   editable?: boolean;
   style?: CSSProperties;
   state: LaptopLayout;
+  divRef: RefObject<HTMLDivElement>;
   onStateChange: (newState: LaptopLayout) => void;
 }
 
@@ -76,14 +84,21 @@ const Editor: React.FC<Props> = (props) => {
     state: layout,
     style,
     editable,
+    divRef,
   } = { ...defaultProps, ...props };
   const svgRef = useRef<SVGSVGElement>(null);
   const [ghostShown, setGhostShown] = useState<boolean>(false);
-  const [ghostPosition, setGhostPosition] = useState<{ x: number; y: number }>({ x: 0.5, y: 0.5 });
+  const [ghostPosition, setGhostPosition] = useState<{ x: number; y: number }>({
+    x: 0.5,
+    y: 0.5,
+  });
 
   const { laptop, stickers } = layout;
 
-  const renderStickers = useMemo(() => [manufacturerLogo[laptop.manufacturer], ...stickers], [laptop, stickers]);
+  const renderStickers = useMemo(
+    () => [manufacturerLogo[laptop.manufacturer], ...stickers],
+    [laptop, stickers]
+  );
 
   const handleClick: MouseEventHandler<SVGSVGElement> = (e) => {
     if (!svgRef.current || !editable) return;
@@ -117,37 +132,47 @@ const Editor: React.FC<Props> = (props) => {
 
   return (
     <EditorContext.Provider value={{ laptopHeight, laptopWidth }}>
-      <svg
-        style={{ ...(editable && currentSticker ? { cursor: "crosshair" } : {}), ...style }}
-        onClick={handleClick}
-        onMouseEnter={() => setGhostShown(true)}
-        onMouseLeave={() => setGhostShown(false)}
-        onMouseMove={handleMouseEvent}
-        ref={svgRef}
-        viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}
-      >
-        <defs>
-          <EditorClipPath />
-        </defs>
-        <g clipPath="url(#shape)">
-          <image href={`/assets/laptop/laptop-${laptop.color}.svg`} width={laptopWidth} height={laptopHeight} />
-          {renderStickers.map((sticker, i) => (
-            <StickerElement position={sticker} key={i.toString()} />
-          ))}
-          {editable && ghostShown && currentSticker ? (
-            <g opacity={0.5}>
-              <StickerElement
-                position={{
-                  ...ghostPosition,
-                  sticker: currentSticker,
-                  scale: stickerDefaultRatio,
-                  rotate: 0,
-                }}
-              />
-            </g>
-          ) : null}
-        </g>
-      </svg>
+      <div ref={divRef}>
+        <svg
+          style={{
+            ...(editable && currentSticker ? { cursor: "crosshair" } : {}),
+            ...style,
+          }}
+          onClick={handleClick}
+          onMouseEnter={() => setGhostShown(true)}
+          onMouseLeave={() => setGhostShown(false)}
+          onMouseMove={handleMouseEvent}
+          ref={svgRef}
+          viewBox={`0 0 ${laptopWidth} ${laptopHeight}`}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <EditorClipPath />
+          </defs>
+          <g clipPath="url(#shape)">
+            <image
+              href={`/assets/laptop/laptop-${laptop.color}.svg`}
+              width={laptopWidth}
+              height={laptopHeight}
+            />
+            {renderStickers.map((sticker, i) => (
+              <StickerElement position={sticker} key={i.toString()} />
+            ))}
+            {editable && ghostShown && currentSticker ? (
+              <g opacity={0.5}>
+                <StickerElement
+                  position={{
+                    ...ghostPosition,
+                    sticker: currentSticker,
+                    scale: stickerDefaultRatio,
+                    rotate: 0,
+                  }}
+                />
+              </g>
+            ) : null}
+          </g>
+        </svg>
+      </div>
     </EditorContext.Provider>
   );
 };
